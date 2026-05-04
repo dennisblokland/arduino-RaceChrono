@@ -22,7 +22,7 @@ public:
   void sendCanData(uint32_t pid, const uint8_t *data, uint8_t len);
 
 private:
-  void onWrite(BLECharacteristic *characteristic);
+  void onWrite(NimBLECharacteristic *characteristic, NimBLEConnInfo& connInfo);
 
   RaceChronoBleCanHandler *_handler;
 
@@ -65,8 +65,6 @@ void RaceChronoBleAgentESP32::setUp(
       _bleService->createCharacteristic(
           CAN_BUS_CHARACTERISTIC_UUID,
           NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY);
-
-  _bleService->start();
 }
 
 void RaceChronoBleAgentESP32::startAdvertising() {
@@ -75,7 +73,7 @@ void RaceChronoBleAgentESP32::startAdvertising() {
   // TODO: Why is this different from the value used for nRF52?
   advertising->setMaxInterval(160);
   advertising->addServiceUUID(_bleService->getUUID());
-  advertising->setScanResponse(false);
+  advertising->enableScanResponse(false);
 
   advertising->start();
 }
@@ -100,7 +98,7 @@ void RaceChronoBleAgentESP32::sendCanData(
   _canBusDataCharacteristic->notify();
 }
 
-void RaceChronoBleAgentESP32::onWrite(BLECharacteristic *characteristic) {
+void RaceChronoBleAgentESP32::onWrite(NimBLECharacteristic *characteristic, NimBLEConnInfo& connInfo) {
   NimBLEAttValue value = characteristic->getValue();
   _handler->handlePidRequest(value.data(), value.length());
 }
