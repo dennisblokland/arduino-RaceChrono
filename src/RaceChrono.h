@@ -29,7 +29,13 @@ public:
 
   virtual void sendCanData(uint32_t pid, const uint8_t *data, uint8_t len) = 0;
 
+  // Controls whether the peripheral automatically resumes advertising after a
+  // central disconnects. Must be called before setUp(). Defaults to true.
+  void setAdvertiseOnDisconnect(bool enable) { _advertiseOnDisconnect = enable; }
+
 protected:
+  bool _advertiseOnDisconnect = true;
+
   static const uint16_t RACECHRONO_SERVICE_UUID = 0x1ff8;
 
   // RaceChrono uses two BLE characteristics:

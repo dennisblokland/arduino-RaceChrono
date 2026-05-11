@@ -54,6 +54,7 @@ void RaceChronoBleAgentESP32::setUp(
 
   BLEDevice::setSecurityIOCap(BLE_HS_IO_NO_INPUT_OUTPUT);
   _bleServer = BLEDevice::createServer();
+  _bleServer->advertiseOnDisconnect(_advertiseOnDisconnect);
   _bleService = _bleServer->createService(RACECHRONO_SERVICE_UUID);
 
   _pidRequestsCharacteristic =

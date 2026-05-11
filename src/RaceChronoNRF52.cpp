@@ -76,7 +76,7 @@ void RaceChronoBleAgentNRF52::startAdvertising() {
   Bluefruit.Advertising.addTxPower();
   Bluefruit.Advertising.addService(_service);
   Bluefruit.Advertising.addName();
-  Bluefruit.Advertising.restartOnDisconnect(true);
+  Bluefruit.Advertising.restartOnDisconnect(_advertiseOnDisconnect);
 
   // Fast mode interval: 20 ms, slow mode interval: 152.5 ms.
   // The numbers specified on the call are multiplied by (0.625 ms) units.
